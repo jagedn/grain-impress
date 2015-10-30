@@ -1,0 +1,32 @@
+<% page.presentations.eachWithIndex { p, idx ->  %>
+<section class="presentation bg-primary" id="presentation_${p.key}">
+    <div class="container">
+        <div class="row text-center">
+            <div class="col-lg-10 col-lg-offset-1">
+                <h2>${p.value.title}</h2>
+                <div class="row">
+                    <div id="${p.key}" class="impress"
+                         data-view-port-width="${p.value.widht?:800}"
+                         data-view-port-height="${p.value.height?:800}">
+                        <%
+                        def x = 0
+                        p.value.steps?.eachWithIndex { step, idxStep ->
+                            def s = ([] << step.split(',') << [0].multiply(10)).flatten()
+                            def resource = s.remove(0)
+                            x += s.remove(0) ?: 1000
+                            def y = s.remove(0)
+                            def z = s.remove(0)
+                            def duration = s.remove(0)
+                        %>
+                        <div class="step slide" data-x="${x}" data-y="${y}" data-z="${z}" id="step_${idx}_${idxStep}"
+                             data-duration="${duration}">
+                            ${include 'slides/'+resource }
+                        </div>
+                        <% } %>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<% } %>
